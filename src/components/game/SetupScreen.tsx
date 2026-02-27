@@ -4,14 +4,16 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Users, Play, Settings2 } from 'lucide-react';
+import { CategoryData } from '@/app/lib/game-data';
 
 interface SetupScreenProps {
   numPlayers: number;
   setNumPlayers: (val: number) => void;
+  setGameCategory: (cat: CategoryData[]) => void;
   onStart: () => void;
 }
 
-export const SetupScreen: React.FC<SetupScreenProps> = ({ numPlayers, setNumPlayers, onStart }) => {
+export const SetupScreen: React.FC<SetupScreenProps> = ({ numPlayers, setNumPlayers, setGameCategory, onStart }) => {
   return (
     <Card className="w-full max-w-md bg-card/80 backdrop-blur-md border-border shadow-2xl">
       <CardHeader className="text-center space-y-4">

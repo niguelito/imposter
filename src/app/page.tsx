@@ -6,7 +6,7 @@ import { RoleReveal } from '@/components/game/RoleReveal';
 import { DiscussionScreen } from '@/components/game/DiscussionScreen';
 import { VotingScreen } from '@/components/game/VotingScreen';
 import { ResultsScreen } from '@/components/game/ResultsScreen';
-import { getRandomWord } from '@/app/lib/game-data';
+import { GameCategories, getRandomWord } from '@/app/lib/game-data';
 
 type GamePhase = 'setup' | 'reveal' | 'discussion' | 'voting' | 'results';
 
@@ -14,13 +14,14 @@ export default function Home() {
   const [phase, setPhase] = useState<GamePhase>('setup');
   const [numPlayers, setNumPlayers] = useState(3);
   const [impostorIndex, setImpostorIndex] = useState(-1);
+  const [gameCategory, setGameCategory] = useState(GameCategories.Regular);
   const [secretWord, setSecretWord] = useState('');
   const [category, setCategory] = useState('');
   const [revealPlayerIndex, setRevealPlayerIndex] = useState(0);
   const [votes, setVotes] = useState<number[]>([]);
 
   const startNewGame = useCallback(() => {
-    const { word, category } = getRandomWord();
+    const { word, category } = getRandomWord(gameCategory);
     const impIndex = Math.floor(Math.random() * numPlayers);
     
     setSecretWord(word);
@@ -58,7 +59,8 @@ export default function Home() {
           <SetupScreen 
             numPlayers={numPlayers} 
             setNumPlayers={setNumPlayers} 
-            onStart={startNewGame} 
+            setGameCategory={setGameCategory}
+            onStart={startNewGame}
           />
         )}
 
