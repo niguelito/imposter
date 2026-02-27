@@ -29,7 +29,7 @@ export default function Home() {
     setImpostorIndex(impIndex);
     setRevealPlayerIndex(0);
     setPhase('reveal');
-  }, [numPlayers]);
+  }, [numPlayers, gameCategory]);
 
   const handleNextReveal = () => {
     if (revealPlayerIndex < numPlayers - 1) {
@@ -59,6 +59,7 @@ export default function Home() {
           <SetupScreen 
             numPlayers={numPlayers} 
             setNumPlayers={setNumPlayers} 
+            gameCategory={gameCategory}
             setGameCategory={setGameCategory}
             onStart={startNewGame}
           />

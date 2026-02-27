@@ -3,17 +3,38 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Users, Play, Settings2 } from 'lucide-react';
-import { CategoryData } from '@/app/lib/game-data';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { Users, Play, Settings2, Tag } from 'lucide-react';
+import { CategoryData, GameCategories } from '@/app/lib/game-data';
 
 interface SetupScreenProps {
   numPlayers: number;
   setNumPlayers: (val: number) => void;
+  gameCategory: CategoryData[];
   setGameCategory: (cat: CategoryData[]) => void;
   onStart: () => void;
 }
 
-export const SetupScreen: React.FC<SetupScreenProps> = ({ numPlayers, setNumPlayers, setGameCategory, onStart }) => {
+export const SetupScreen: React.FC<SetupScreenProps> = ({ 
+  numPlayers, 
+  setNumPlayers, 
+  gameCategory,
+  setGameCategory, 
+  onStart 
+}) => {
+  const availableCategories = [
+    { id: 'regular', name: 'Regular', data: GameCategories.Regular },
+    { id: 'brawlstars', name: 'Brawl Stars', data: GameCategories.BrawlStars },
+  ];
+
+  const currentId = availableCategories.find(c => c.data === gameCategory)?.id || 'regular';
+
   return (
     <Card className="w-full max-w-md bg-card/80 backdrop-blur-md border-border shadow-2xl">
       <CardHeader className="text-center space-y-4">
@@ -29,27 +50,56 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ numPlayers, setNumPlay
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="players" className="text-lg font-medium flex items-center gap-2">
-              <Users className="w-5 h-5 text-accent" />
-              Players
+          {/* Category Selection */}
+          <div className="space-y-3">
+            <Label htmlFor="category" className="text-lg font-medium flex items-center gap-2">
+              <Tag className="w-5 h-5 text-accent" />
+              Word Pack
             </Label>
-            <span className="text-2xl font-bold font-headline text-primary bg-primary/10 px-3 py-1 rounded-md">
-              {numPlayers}
-            </span>
+            <Select 
+              value={currentId} 
+              onValueChange={(val) => {
+                const cat = availableCategories.find(c => c.id === val);
+                if (cat) setGameCategory(cat.data);
+              }}
+            >
+              <SelectTrigger id="category" className="w-full h-12 bg-secondary/40 border-border">
+                <SelectValue placeholder="Select a word pack" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableCategories.map(cat => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <Slider
-            id="players"
-            min={3}
-            max={12}
-            step={1}
-            value={[numPlayers]}
-            onValueChange={(vals) => setNumPlayers(vals[0])}
-            className="py-4"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground px-1">
-            <span>3 Players</span>
-            <span>12 Players</span>
+
+          {/* Player Count Selection */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="players" className="text-lg font-medium flex items-center gap-2">
+                <Users className="w-5 h-5 text-accent" />
+                Players
+              </Label>
+              <span className="text-2xl font-bold font-headline text-primary bg-primary/10 px-3 py-1 rounded-md">
+                {numPlayers}
+              </span>
+            </div>
+            <Slider
+              id="players"
+              min={3}
+              max={12}
+              step={1}
+              value={[numPlayers]}
+              onValueChange={(vals) => setNumPlayers(vals[0])}
+              className="py-4"
+            />
+            <div className="flex justify-between text-xs text-muted-foreground px-1">
+              <span>3 Players</span>
+              <span>12 Players</span>
+            </div>
           </div>
         </div>
 
