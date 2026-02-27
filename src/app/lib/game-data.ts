@@ -88,10 +88,6 @@ const MARVEL_RIVALS: CategoryData[] = [
   }
 ]
 
-const GAMES: CategoryData[] = [
-  
-]
-
 export class GameCategories {
   public static Regular = REGULAR;
   public static BrawlStars = BRAWL_STARS;
