@@ -27,7 +27,7 @@ export const ERHS_STAFF: CategoryData[] = [
     },
     {
       category: "Art Teachers",
-      words: ["Ms. Kelley", "Ms. Kissam", "Ms. Okada", "Ms. Murphy",   "Mr. Oliveros", "Ms. Soto", "Ms. Silverman"]
+      words: ["Ms. Kelley", "Ms. Kissam", "Ms. Okada", "Ms. Murphy", "Mr. Oliveros", "Ms. Soto", "Ms. Silverman"]
     },
     {
       category: "PE Teachers/Coaches",
@@ -35,7 +35,7 @@ export const ERHS_STAFF: CategoryData[] = [
     },
     {
       category: "Administration",
-      words: ["Ms. Cisneros", "Mr. Cohen", "Ms. Leonido", "Mr. Moran", "Mr. Steinorth", "Ms. Tang", "Ms. Tsui", "Mr. Vergara", "Ms. Wakasa"]
+      words: ["Ms. Cisneros", "Mr. Cohen", "Ms. Leonido", "Mr. Moran", "Mr. Steinorth", "Ms. Tang", "Ms. Tsui", "Mr. Vergara", "Ms. Wakasa", "Ms. Marcy"]
     },
     {
       category: "Counselors",
