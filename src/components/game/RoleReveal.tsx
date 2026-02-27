@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Eye, EyeOff, User, ArrowRight, ShieldAlert, Sparkles } from 'lucide-react';
+import { Eye, User, ArrowRight, ShieldAlert, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface RoleRevealProps {
   playerIndex: number;
+  playerName: string;
   role: 'impostor' | 'player';
   word: string;
   category: string;
   onNext: () => void;
 }
 
-export const RoleReveal: React.FC<RoleRevealProps> = ({ playerIndex, role, word, category, onNext }) => {
+export const RoleReveal: React.FC<RoleRevealProps> = ({ playerIndex, playerName, role, word, category, onNext }) => {
   const [revealed, setRevealed] = useState(false);
 
   const handleNext = () => {
@@ -33,7 +34,7 @@ export const RoleReveal: React.FC<RoleRevealProps> = ({ playerIndex, role, word,
             </div>
           </div>
         </div>
-        <CardTitle className="text-2xl font-headline">Player {playerIndex + 1}</CardTitle>
+        <CardTitle className="text-2xl font-headline">{playerName || `Player ${playerIndex + 1}`}</CardTitle>
       </CardHeader>
       
       <CardContent className="space-y-6 flex flex-col items-center">

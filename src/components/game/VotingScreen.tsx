@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, CheckCircle2, ShieldQuestion } from 'lucide-react';
+import { ShieldQuestion } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface VotingScreenProps {
   numPlayers: number;
+  playerNames: string[];
   onVote: (votes: number[]) => void;
 }
 
-export const VotingScreen: React.FC<VotingScreenProps> = ({ numPlayers, onVote }) => {
+export const VotingScreen: React.FC<VotingScreenProps> = ({ numPlayers, playerNames, onVote }) => {
   const [currentPlayerVoter, setCurrentPlayerVoter] = useState(0);
   const [votes, setVotes] = useState<number[]>([]);
 
@@ -23,6 +24,8 @@ export const VotingScreen: React.FC<VotingScreenProps> = ({ numPlayers, onVote }
     }
   };
 
+  const currentPlayerName = playerNames[currentPlayerVoter] || `Player ${currentPlayerVoter + 1}`;
+
   return (
     <Card className="w-full max-w-md bg-card/80 backdrop-blur-md border-border shadow-2xl">
       <CardHeader className="text-center">
@@ -31,7 +34,7 @@ export const VotingScreen: React.FC<VotingScreenProps> = ({ numPlayers, onVote }
             <ShieldQuestion className="w-10 h-10 text-primary" />
           </div>
         </div>
-        <CardTitle className="text-2xl font-headline">Player {currentPlayerVoter + 1}, cast your vote!</CardTitle>
+        <CardTitle className="text-2xl font-headline">{currentPlayerName}, cast your vote!</CardTitle>
         <p className="text-muted-foreground text-sm">Who do you think is the impostor?</p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -43,14 +46,14 @@ export const VotingScreen: React.FC<VotingScreenProps> = ({ numPlayers, onVote }
               disabled={i === currentPlayerVoter}
               onClick={() => handlePlayerVote(i)}
               className={cn(
-                "h-16 flex items-center justify-start gap-3 text-lg font-headline border-muted hover:border-primary transition-all group",
+                "h-16 flex items-center justify-start gap-3 text-lg font-headline border-muted hover:border-primary transition-all group px-3",
                 i === currentPlayerVoter && "opacity-50 cursor-not-allowed"
               )}
             >
-              <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-sm font-bold group-hover:bg-primary group-hover:text-primary-foreground">
+              <div className="w-7 h-7 shrink-0 rounded-full bg-secondary flex items-center justify-center text-xs font-bold group-hover:bg-primary group-hover:text-primary-foreground">
                 {i + 1}
               </div>
-              <span>Player {i + 1}</span>
+              <span className="truncate">{playerNames[i] || `Player ${i + 1}`}</span>
             </Button>
           ))}
         </div>

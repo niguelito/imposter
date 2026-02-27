@@ -31,6 +31,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
   const availableCategories = [
     { id: 'regular', name: 'Regular', data: GameCategories.Regular },
     { id: 'brawlstars', name: 'Brawl Stars', data: GameCategories.BrawlStars },
+    { id: 'rivals', name: 'Marvel Rivals', data: GameCategories.MarvelRivals }
   ];
 
   const currentId = availableCategories.find(c => c.data === gameCategory)?.id || 'regular';

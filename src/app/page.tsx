@@ -2,17 +2,19 @@
 
 import React, { useState, useCallback } from 'react';
 import { SetupScreen } from '@/components/game/SetupScreen';
+import { NamingScreen } from '@/components/game/NamingScreen';
 import { RoleReveal } from '@/components/game/RoleReveal';
 import { DiscussionScreen } from '@/components/game/DiscussionScreen';
 import { VotingScreen } from '@/components/game/VotingScreen';
 import { ResultsScreen } from '@/components/game/ResultsScreen';
 import { GameCategories, getRandomWord } from '@/app/lib/game-data';
 
-type GamePhase = 'setup' | 'reveal' | 'discussion' | 'voting' | 'results';
+type GamePhase = 'setup' | 'naming' | 'reveal' | 'discussion' | 'voting' | 'results';
 
 export default function Home() {
   const [phase, setPhase] = useState<GamePhase>('setup');
   const [numPlayers, setNumPlayers] = useState(3);
+  const [playerNames, setPlayerNames] = useState<string[]>([]);
   const [impostorIndex, setImpostorIndex] = useState(-1);
   const [gameCategory, setGameCategory] = useState(GameCategories.Regular);
   const [secretWord, setSecretWord] = useState('');
@@ -20,7 +22,12 @@ export default function Home() {
   const [revealPlayerIndex, setRevealPlayerIndex] = useState(0);
   const [votes, setVotes] = useState<number[]>([]);
 
-  const startNewGame = useCallback(() => {
+  const goToNaming = () => {
+    setPhase('naming');
+  };
+
+  const startNewGame = useCallback((names: string[]) => {
+    setPlayerNames(names);
     const { word, category } = getRandomWord(gameCategory);
     const impIndex = Math.floor(Math.random() * numPlayers);
     
@@ -50,6 +57,7 @@ export default function Home() {
 
   const restart = () => {
     setPhase('setup');
+    setPlayerNames([]);
   };
 
   return (
@@ -61,13 +69,22 @@ export default function Home() {
             setNumPlayers={setNumPlayers} 
             gameCategory={gameCategory}
             setGameCategory={setGameCategory}
-            onStart={startNewGame}
+            onStart={goToNaming}
+          />
+        )}
+
+        {phase === 'naming' && (
+          <NamingScreen 
+            numPlayers={numPlayers} 
+            onConfirm={startNewGame}
+            onBack={() => setPhase('setup')}
           />
         )}
 
         {phase === 'reveal' && (
           <RoleReveal 
             playerIndex={revealPlayerIndex}
+            playerName={playerNames[revealPlayerIndex]}
             role={revealPlayerIndex === impostorIndex ? 'impostor' : 'player'}
             word={secretWord}
             category={category}
@@ -82,6 +99,7 @@ export default function Home() {
         {phase === 'voting' && (
           <VotingScreen 
             numPlayers={numPlayers} 
+            playerNames={playerNames}
             onVote={handleVoting} 
           />
         )}
@@ -89,6 +107,7 @@ export default function Home() {
         {phase === 'results' && (
           <ResultsScreen 
             impostorIndex={impostorIndex}
+            playerNames={playerNames}
             votes={votes}
             secretWord={secretWord}
             category={category}
