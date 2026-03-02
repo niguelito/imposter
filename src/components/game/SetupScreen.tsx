@@ -11,7 +11,7 @@ import {
   SelectValue 
 } from '@/components/ui/select';
 import { Users, Play, Settings2, Tag } from 'lucide-react';
-import { CategoryData, GameCategories } from '@/app/lib/game-data';
+import { CATEGORIES, CategoryData } from '@/app/lib/game-data';
 
 interface SetupScreenProps {
   numPlayers: number;
@@ -28,14 +28,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
   setGameCategory, 
   onStart 
 }) => {
-  const availableCategories = [
-    { id: 'regular', name: 'Regular', data: GameCategories.Regular },
-    { id: 'brawlstars', name: 'Brawl Stars', data: GameCategories.BrawlStars },
-    { id: 'rivals', name: 'Marvel Rivals', data: GameCategories.MarvelRivals },
-    { id: 'staff', name: 'Erhs Staff', data: GameCategories.ErhsStaff }
-  ];
-
-  const currentId = availableCategories.find(c => c.data === gameCategory)?.id || 'regular';
+  const currentId = CATEGORIES.find(c => c.data === gameCategory)?.id || 'regular';
 
   return (
     <Card className="w-full max-w-md bg-card/80 backdrop-blur-md border-border shadow-2xl">
@@ -61,7 +54,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
             <Select 
               value={currentId} 
               onValueChange={(val) => {
-                const cat = availableCategories.find(c => c.id === val);
+                const cat = CATEGORIES.find(c => c.id === val);
                 if (cat) setGameCategory(cat.data);
               }}
             >
@@ -69,7 +62,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                 <SelectValue placeholder="Select a word pack" />
               </SelectTrigger>
               <SelectContent>
-                {availableCategories.map(cat => (
+                {CATEGORIES.map(cat => (
                   <SelectItem key={cat.id} value={cat.id}>
                     {cat.name}
                   </SelectItem>

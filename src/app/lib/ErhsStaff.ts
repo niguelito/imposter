@@ -1,4 +1,4 @@
-import { CategoryData } from "../game-data";
+import { CategoryData } from "./game-data";
 
 export const ERHS_STAFF: CategoryData[] = [
     {

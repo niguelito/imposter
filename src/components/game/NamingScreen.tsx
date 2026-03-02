@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,12 +12,32 @@ interface NamingScreenProps {
 }
 
 export const NamingScreen: React.FC<NamingScreenProps> = ({ numPlayers, onConfirm, onBack }) => {
-  const [names, setNames] = useState<string[]>(Array(numPlayers).fill(''));
+  const [names, setNames] = useState<string[]>(() => {
+  const savedNames = document.cookie.split('; ').find(row => row.startsWith('playerNames='));
+    if (savedNames) {
+      try {
+        const parsedNames = JSON.parse(decodeURIComponent(savedNames.split('=')[1]));
+        if (Array.isArray(parsedNames) && parsedNames.length === numPlayers) {
+          return parsedNames;
+        }
+      } catch (error) {
+        console.error("Failed to parse names from cookies:", error);
+      }
+    }
+    return Array(numPlayers).fill('');
+  });
+
+  function saveCookie() {
+    console.log("saving cookie")
+    const jsonNames = JSON.stringify(names);
+    document.cookie = `playerNames=${encodeURIComponent(jsonNames)};path=/;max-age=50000`;
+  }
 
   const handleNameChange = (index: number, value: string) => {
     const newNames = [...names];
     newNames[index] = value;
     setNames(newNames);
+    saveCookie();
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -51,6 +71,7 @@ export const NamingScreen: React.FC<NamingScreenProps> = ({ numPlayers, onConfir
                   id={`player-${i}`}
                   placeholder={`Name for Player ${i + 1}`}
                   value={names[i]}
+                  content={names[i]}
                   onChange={(e) => handleNameChange(i, e.target.value)}
                   className="bg-secondary/20 border-border focus:border-primary transition-colors h-11"
                   autoComplete="off"
