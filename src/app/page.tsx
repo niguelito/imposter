@@ -7,7 +7,7 @@ import { RoleReveal } from '@/components/game/RoleReveal';
 import { DiscussionScreen } from '@/components/game/DiscussionScreen';
 import { VotingScreen } from '@/components/game/VotingScreen';
 import { ResultsScreen } from '@/components/game/ResultsScreen';
-import { GameCategories, getRandomWord } from '@/app/lib/game-data';
+import { CATEGORIES, getRandomWord } from '@/app/lib/game-data';
 
 type GamePhase = 'setup' | 'naming' | 'reveal' | 'discussion' | 'voting' | 'results';
 
@@ -16,7 +16,7 @@ export default function Home() {
   const [numPlayers, setNumPlayers] = useState(3);
   const [playerNames, setPlayerNames] = useState<string[]>([]);
   const [impostorIndex, setImpostorIndex] = useState(-1);
-  const [gameCategory, setGameCategory] = useState(GameCategories.Regular);
+  const [gameCategory, setGameCategory] = useState(CATEGORIES[0].data);
   const [secretWord, setSecretWord] = useState('');
   const [category, setCategory] = useState('');
   const [revealPlayerIndex, setRevealPlayerIndex] = useState(0);
